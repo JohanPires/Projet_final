@@ -4,12 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Training;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TrainingController extends Controller
 {
        public function index($id)
        {
-           return Training::with('exercices')->where('user_id', $id)->get();
+        $trainings =Training::with('exercices')->where('user_id', $id)->get();
+
+            if ($trainings) {
+                return $trainings;
+            } else {
+                return response()->json(['message' => 'Aucune séance trouvée']);
+           }
        }
 
        public function show($id)
@@ -31,6 +38,7 @@ class TrainingController extends Controller
 
            $training = new Training;
            $training->name = $request->name;
+           $training->user_id = Auth::user()->id;
            $training->save();
            return response()->json($training, 201);
        }

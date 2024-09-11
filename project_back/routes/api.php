@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/user/{id}', [UserController::class, 'deleteUser']);
 
     Route::get('/training/{id}', [TrainingController::class, 'index']);
-    Route::get('/training/{id}', [TrainingController::class, 'show']);
+    Route::get('/training/one/{id}', [TrainingController::class, 'show']);
     Route::post('training', [TrainingController::class, 'store']);
     Route::put('/training/{id}', [TrainingController::class, 'update']);
     Route::delete('/training/{id}', [TrainingController::class, 'destroy']);

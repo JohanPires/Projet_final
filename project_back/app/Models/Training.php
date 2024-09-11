@@ -11,7 +11,7 @@ class Training extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nom',
+        'nom', 'user_id'
     ];
 
     public function exercices()
