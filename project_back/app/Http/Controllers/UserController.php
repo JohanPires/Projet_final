@@ -41,9 +41,18 @@ class UserController extends Controller
 
     public function editUser($id, Request $request) {
         $user = User::find($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'password' => 'nullable',
+        ]);
+
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = $request->password;
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
         $user->save();
 
         return response()->json(['status' => 200, 'content' => 'Utilisateur modifier avec succées']);

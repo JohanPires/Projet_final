@@ -29,7 +29,25 @@ class ExercicesController extends Controller
               'name' => 'required|string|max:255',
               'advice' => 'nullable|string',
           ]);
-          $training = Training::find($request->id_training);
+
+          $trainingId = $request->id_training;
+
+          // Attendre que la séance soit disponible
+          $maxRetries = 10; // Maximum number of retries
+          $retryInterval = 500000; // Interval in microseconds (0.5 second)
+          $retries = 0;
+          $training = null;
+          while ($retries < $maxRetries) {
+            $training = Training::find($trainingId);
+
+            if ($training) {
+                break; // Exit loop if training is found
+            }
+
+            // Sleep for a short time before retrying
+            usleep($retryInterval);
+            $retries++;
+        }
 
           $exercice = new Exercice;
           $exercice->name = $request->name;
