@@ -20,6 +20,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/user', [UserController::class, 'postUser']);
     Route::put('/user/{id}', [UserController::class, 'editUser']);
     Route::delete('/user/{id}', [UserController::class, 'deleteUser']);
+    Route::post('/logout', [UserController::class, 'logout']);
+
 
     Route::get('/training/{id}', [TrainingController::class, 'index']);
     Route::get('/training/one/{id}', [TrainingController::class, 'show']);
