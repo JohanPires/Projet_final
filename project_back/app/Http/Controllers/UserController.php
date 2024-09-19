@@ -89,10 +89,9 @@ class UserController extends Controller
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
-                'email' => ['Identifiant faux'],
+                'email' => ['Vos identifiants sont incorrect'],
             ]);
         }
-
         $token = $user->createToken('auth-token')->plainTextToken;
         $id = $user->id;
 
@@ -106,3 +105,5 @@ class UserController extends Controller
         return response()->json(['message' => 'Déconnexion']);
     }
 }
+
+
