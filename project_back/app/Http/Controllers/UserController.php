@@ -74,6 +74,10 @@ class UserController extends Controller
             'role' => $request->role,
             'password' => Hash::make($request->password),
         ]);
+        if ($request->hasFile('picture')) {
+            $user->picture = $request->file('picture')->store('images/recipes', 'public');
+            $user->save();
+        }
 
         return response()->json(['message' => 'User created successfully']);
     }

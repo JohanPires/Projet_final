@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('exercices', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('advice');
+            $table->string('advice')->nullable();
             $table->timestamps();
         });
     }
