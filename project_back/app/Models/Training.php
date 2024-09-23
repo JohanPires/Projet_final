@@ -14,10 +14,21 @@ class Training extends Model
         'nom', 'user_id'
     ];
 
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function($training) {
+            $training->exercices()->delete();
+        });
+    }
+
     public function exercices()
     {
-        return $this->belongsToMany(Exercice::class, 'training_exercice')
-                    ->withPivot('series', 'repetitions')
-                    ->withTimestamps();
+        return $this->hasMany(Exercice::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

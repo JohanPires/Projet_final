@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('exercices', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('training_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->string('advice')->nullable();
+            $table->integer('series');
+            $table->integer('repetitions');
             $table->timestamps();
         });
     }

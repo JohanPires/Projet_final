@@ -13,12 +13,11 @@ class Exercice extends Model
     protected $fillable = [
         'nom',
         'description',
+        'series',
+        'repetitions'
     ];
-
-    public function seances()
+    public function training()
     {
-        return $this->belongsToMany(Training::class, 'trainnig_exercice')
-                    ->withPivot('series', 'repetitions')
-                    ->withTimestamps();
+        return $this->belongsTo(Training::class);
     }
 }

@@ -28,46 +28,38 @@ class ExercicesController extends Controller
           $validated = $request->validate([
               'name' => 'required|string|max:255',
               'advice' => 'nullable|string',
+              'series' => 'required|integer',
+              'repetitions' => 'required|integer',
           ]);
 
           $trainingId = $request->id_training;
 
-          // Attendre que la séance soit disponible
-          $maxRetries = 10; // Maximum number of retries
-          $retryInterval = 500000; // Interval in microseconds (0.5 second)
+          $maxRetries = 10;
+          $retryInterval = 500000;
           $retries = 0;
           $training = null;
           while ($retries < $maxRetries) {
             $training = Training::find($trainingId);
 
             if ($training) {
-                break; // Exit loop if training is found
+                break;
             }
 
-            // Sleep for a short time before retrying
             usleep($retryInterval);
             $retries++;
         }
 
           $exercice = new Exercice;
           $exercice->name = $request->name;
+          $exercice->training_id = $request->id_training;
           $exercice->advice = $request->advice;
+          $exercice->series = $request->series;
+          $exercice->repetitions = $request->repetitions;
           $exercice->save();
 
           if (!$training) {
               return response()->json(['message' => 'Séance non trouvée'], 404);
           }
-
-          // $validated = $request->validate([
-          //     'exercice_id' => 'required|exists:exercices,id',
-          //     'series' => 'required|integer',
-          //     'repetitions' => 'required|integer',
-          // ]);
-
-          $training->exercices()->attach($exercice->id, [
-              'series' => $request->series,
-              'repetitions' =>  $request->repetitions,
-          ]);
 
           return response()->json($exercice, 201);
       }

@@ -64,4 +64,17 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function($user) {
+            $user->trainings()->delete();
+        });
+    }
+
+    public function trainings()
+    {
+        return $this->hasMany(Training::class);
+    }
 }
